@@ -24,6 +24,7 @@ int main(int argc, char const *argv[])
   kl->push(&a);
   // kl->print_klist();
 
+  kl->exists(&a);
   kl->push(&a);
   // kl->print_klist();
 
