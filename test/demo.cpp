@@ -12,7 +12,7 @@ public:
 
 int main(int argc, char const *argv[])
 {
-  klist<foo, uint16_t> *kl = new klist<foo, uint16_t>();
+  generiklist<foo, uint16_t> *kl = new generiklist<foo, uint16_t>();
 
   foo a(10);
   foo b(20);
