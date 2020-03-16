@@ -9,19 +9,19 @@
 #define LOG_DEBUG printf
 
 template<class T>
-class knode {
+class gknode {
 public:
   T* obj;
-  knode<T>* next;
-  knode<T>* prev;
+  gknode<T>* next;
+  gknode<T>* prev;
 
-  knode(){
+  gknode(){
     obj = EMPTY_NODE;
     next = EMPTY_NODE;
     prev = EMPTY_NODE;
   }
 
-  knode(T* _obj){
+  gknode(T* _obj){
     obj = _obj;
     next = EMPTY_NODE;
     prev = EMPTY_NODE;
@@ -29,22 +29,22 @@ public:
 };
 
 template<class T, class U>
-class klist {
+class generiklist {
 private:
   bool acceptDuplicate;
-  knode<T>* list_head;
+  gknode<T>* list_head;
   U length;
 
   bool isDuplicate(T* node_obj){
     if(acceptDuplicate) return false;
 
-    knode<T>* itr = list_head;
+    gknode<T>* itr = list_head;
 
     if(!itr) return false;
 
     do{
       if(itr->obj == node_obj){
-        LOG_WARN("Cannot add duplicate object. Change the klist initialization to accept duplicate objects.\n");
+        LOG_WARN("Cannot add duplicate object. Change the generiklist initialization to accept duplicate objects.\n");
         return true;
       }
       itr = itr->next;
@@ -55,7 +55,7 @@ private:
 
 public:
 
-  klist(bool _acceptDuplicate = false){
+  generiklist(bool _acceptDuplicate = false){
     acceptDuplicate = _acceptDuplicate;
     list_head = EMPTY_NODE;
     length = 0;
@@ -66,7 +66,7 @@ public:
       return;
     }
 
-    knode<T>* new_node = new knode<T>(node_obj);
+    gknode<T>* new_node = new gknode<T>(node_obj);
 
     if(!list_head){
       list_head = new_node;
@@ -74,7 +74,7 @@ public:
       return;
     }
 
-    knode<T>* itr = list_head;
+    gknode<T>* itr = list_head;
     while(itr->next)
       itr = itr->next;
 
@@ -89,7 +89,7 @@ public:
       return EMPTY_NODE;
     }
 
-    knode<T>* itr = list_head;
+    gknode<T>* itr = list_head;
     T* obj = itr->obj;
 
     if(!itr->next){
@@ -113,7 +113,7 @@ public:
       return;
     }
 
-    knode<T>* new_node = new knode<T>(node_obj);
+    gknode<T>* new_node = new gknode<T>(node_obj);
 
     if(!list_head){
       list_head = new_node;
@@ -144,7 +144,7 @@ public:
 
     T* obj = EMPTY_NODE;
 
-    knode<T>* itr = list_head;
+    gknode<T>* itr = list_head;
     while(itr->next)
       itr = itr->next;
 
@@ -181,9 +181,9 @@ public:
       return;
     }
 
-    knode<T>* new_node = new knode<T>(node_obj);
+    gknode<T>* new_node = new gknode<T>(node_obj);
     U counter = 0;
-    knode<T>* itr = list_head;
+    gknode<T>* itr = list_head;
     while(counter != index){
       itr = itr->next;
       counter += 1;
@@ -210,7 +210,7 @@ public:
       return remove_tail();
 
     U counter = 0;
-    knode<T>* itr = list_head;
+    gknode<T>* itr = list_head;
     T* obj = EMPTY_NODE;
     while(counter != index){
       itr = itr->next;
@@ -232,13 +232,13 @@ public:
   }
 
   // uncomment only to test the demo file in test directory
-  // void print_klist(){
+  // void gprint_klist(){
   //   if(!list_head){
   //     LOG_DEBUG("Linked list is empty\n");
   //     return;
   //   }
 
-  //   knode<T>* itr = list_head;
+  //   gknode<T>* itr = list_head;
   //   LOG_ERR("%d : ", length);
   //   do{
   //     LOG_ERR("->%d", itr->obj->x);
