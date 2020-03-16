@@ -35,7 +35,7 @@ private:
   gknode<T>* list_head;
   U length;
 
-  bool isDuplicate(T* node_obj){
+  bool isDuplicate(T* node_obj, bool log_msg = true){
     if(acceptDuplicate) return false;
 
     gknode<T>* itr = list_head;
@@ -44,7 +44,9 @@ private:
 
     do{
       if(itr->obj == node_obj){
-        LOG_WARN("Cannot add duplicate object. Change the generiklist initialization to accept duplicate objects.\n");
+        if(log_msg){
+          LOG_WARN("Cannot add duplicate object. Change the generiklist initialization to accept duplicate objects.\n");
+        }
         return true;
       }
       itr = itr->next;
@@ -225,6 +227,10 @@ public:
     delete itr;
 
     return obj;
+  }
+
+  bool exists(T* node_obj){
+    return isDuplicate(node_obj, false);
   }
 
   U get_length(){
