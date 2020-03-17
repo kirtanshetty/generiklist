@@ -36,8 +36,6 @@ private:
   U length;
 
   bool isDuplicate(T* node_obj, bool log_msg = true){
-    if(acceptDuplicate) return false;
-
     gknode<T>* itr = list_head;
 
     if(!itr) return false;
@@ -64,7 +62,7 @@ public:
   }
 
   void push(T* node_obj){
-    if(isDuplicate(node_obj)){
+    if(!acceptDuplicate && isDuplicate(node_obj)){
       return;
     }
 
@@ -111,7 +109,7 @@ public:
   }
 
   void add_to_head(T* node_obj){
-    if(isDuplicate(node_obj)){
+    if(!acceptDuplicate && isDuplicate(node_obj)){
       return;
     }
 
@@ -164,7 +162,7 @@ public:
   }
 
   void add_to_index(T* node_obj, U index){
-    if(isDuplicate(node_obj)){
+    if(!acceptDuplicate && isDuplicate(node_obj)){
       return;
     }
 
