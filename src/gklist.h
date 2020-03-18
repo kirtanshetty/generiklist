@@ -1,49 +1,15 @@
+#ifndef __GK_LIST_H__
+#define __GK_LIST_H__
+
 #include <cstddef>
 #include <stdio.h>
 
-#define EMPTY_NODE nullptr
+#include "gklobjects.h"
 
 // Change the loggers when you add it to your repository
 #define LOG_ERR printf
 #define LOG_WARN printf
 #define LOG_DEBUG printf
-
-template<class T>
-class gknode {
-public:
-  T* obj;
-  gknode<T>* next;
-  gknode<T>* prev;
-
-  gknode(){
-    obj = EMPTY_NODE;
-    next = EMPTY_NODE;
-    prev = EMPTY_NODE;
-  }
-
-  gknode(T* _obj){
-    obj = _obj;
-    next = EMPTY_NODE;
-    prev = EMPTY_NODE;
-  }
-};
-
-template<class T>
-class gkn_iterator {
-public:
-  gknode<T>* this_node;
-  T* obj;
-
-  gkn_iterator(){
-    this_node = EMPTY_NODE;
-    obj = EMPTY_NODE;
-  }
-
-  void init(gknode<T>* _gkn, T* _obj){
-    this_node = _gkn;
-    obj = _obj;
-  }
-};
 
 template<class T, class U>
 class generiklist {
@@ -317,5 +283,4 @@ public:
   // }
 };
 
-
-
+#endif
