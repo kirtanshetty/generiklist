@@ -1,14 +1,7 @@
 #include <stdint.h>
 
-#include "../src/klist.h"
-
-class foo{
-public:
-  int x;
-  foo(int val){
-    x = val;
-  }
-};
+#include "../src/gklist.h"
+#include "./demo_classes/foo.h"
 
 int main(int argc, char const *argv[])
 {

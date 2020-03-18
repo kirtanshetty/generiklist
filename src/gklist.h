@@ -28,6 +28,23 @@ public:
   }
 };
 
+template<class T>
+class gkn_iterator {
+public:
+  gknode<T>* this_node;
+  T* obj;
+
+  gkn_iterator(){
+    this_node = EMPTY_NODE;
+    obj = EMPTY_NODE;
+  }
+
+  void init(gknode<T>* _gkn, T* _obj){
+    this_node = _gkn;
+    obj = _obj;
+  }
+};
+
 template<class T, class U>
 class generiklist {
 private:
@@ -35,22 +52,35 @@ private:
   gknode<T>* list_head;
   U length;
 
-  bool isDuplicate(T* node_obj, bool log_msg = true){
+  gknode<T>* find_obj_node(T* node_obj){
     gknode<T>* itr = list_head;
 
-    if(!itr) return false;
+    if(!itr) return EMPTY_NODE;
 
     do{
       if(itr->obj == node_obj){
-        if(log_msg){
-          LOG_WARN("Cannot add duplicate object. Change the generiklist initialization to accept duplicate objects.\n");
-        }
-        return true;
+        return itr;
       }
       itr = itr->next;
     } while(itr);
 
+    return EMPTY_NODE;
+  }
+
+  bool isDuplicate(T* node_obj, bool log_msg = true){
+    if(find_obj_node(node_obj)){
+      if(log_msg){
+        LOG_ERR("Cannot add duplicate object. Change the generiklist initialization to accept duplicate objects.");
+      }
+
+      return true;
+    }
+
     return false;
+  }
+
+  void free_memory(gknode<T>* fnode){
+    delete fnode;
   }
 
 public:
@@ -197,6 +227,14 @@ public:
     length += 1;
   }
 
+  void remove(T* node_obj){
+    gknode<T>* temp_node = find_obj_node(node_obj);
+
+    if(temp_node){
+      free_memory(temp_node);
+    }
+  }
+
   T* remove_from_index(U index){
     if(index >= length){
       LOG_ERR("add_to_index: index is greater than the length\n");
@@ -225,6 +263,33 @@ public:
     delete itr;
 
     return obj;
+  }
+
+  void iterator_head(gkn_iterator<T>* itr){
+    itr->init(list_head, list_head ? list_head->obj : EMPTY_NODE);
+  }
+
+  void get_next(gkn_iterator<T>* itr_obj){
+    if(!itr_obj->this_node || !itr_obj->this_node->next) {
+      itr_obj->init(EMPTY_NODE, EMPTY_NODE);
+      return;
+    }
+
+    itr_obj->init(itr_obj->this_node->next, itr_obj->this_node->next->obj);
+  }
+
+  void get_prev(gkn_iterator<T>* itr_obj){
+    if(!itr_obj->this_node || !itr_obj->this_node->prev) {
+      itr_obj->init(EMPTY_NODE, EMPTY_NODE);
+      return;
+    }
+
+    if(!itr_obj->this_node->prev){
+      itr_obj->init(itr_obj->this_node, EMPTY_NODE);
+      return;
+    }
+
+    itr_obj->init(itr_obj->this_node->prev, itr_obj->this_node->prev->obj);
   }
 
   bool exists(T* node_obj){
