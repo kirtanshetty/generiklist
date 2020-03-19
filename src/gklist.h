@@ -12,14 +12,14 @@
 #define LOG_DEBUG printf
 
 template<class T, class U>
-class generiklist {
+class gk_list {
 private:
   bool acceptDuplicate;
-  gknode<T>* list_head;
+  gkl_node<T>* list_head;
   U length;
 
-  gknode<T>* find_obj_node(T* node_obj){
-    gknode<T>* itr = list_head;
+  gkl_node<T>* find_obj_node(T* node_obj){
+    gkl_node<T>* itr = list_head;
 
     if(!itr) return EMPTY_NODE;
 
@@ -36,7 +36,7 @@ private:
   bool isDuplicate(T* node_obj, bool log_msg = true){
     if(find_obj_node(node_obj)){
       if(log_msg){
-        LOG_ERR("Cannot add duplicate object. Change the generiklist initialization to accept duplicate objects.");
+        LOG_ERR("Cannot add duplicate object. Change the gk_list initialization to accept duplicate objects.");
       }
 
       return true;
@@ -45,13 +45,13 @@ private:
     return false;
   }
 
-  void free_memory(gknode<T>* fnode){
+  void free_memory(gkl_node<T>* fnode){
     delete fnode;
   }
 
 public:
 
-  generiklist(bool _acceptDuplicate = false){
+  gk_list(bool _acceptDuplicate = false){
     acceptDuplicate = _acceptDuplicate;
     list_head = EMPTY_NODE;
     length = 0;
@@ -62,7 +62,7 @@ public:
       return;
     }
 
-    gknode<T>* new_node = new gknode<T>(node_obj);
+    gkl_node<T>* new_node = new gkl_node<T>(node_obj);
 
     if(!list_head){
       list_head = new_node;
@@ -70,7 +70,7 @@ public:
       return;
     }
 
-    gknode<T>* itr = list_head;
+    gkl_node<T>* itr = list_head;
     while(itr->next)
       itr = itr->next;
 
@@ -85,7 +85,7 @@ public:
       return EMPTY_NODE;
     }
 
-    gknode<T>* itr = list_head;
+    gkl_node<T>* itr = list_head;
     T* obj = itr->obj;
 
     if(!itr->next){
@@ -109,7 +109,7 @@ public:
       return;
     }
 
-    gknode<T>* new_node = new gknode<T>(node_obj);
+    gkl_node<T>* new_node = new gkl_node<T>(node_obj);
 
     if(!list_head){
       list_head = new_node;
@@ -140,7 +140,7 @@ public:
 
     T* obj = EMPTY_NODE;
 
-    gknode<T>* itr = list_head;
+    gkl_node<T>* itr = list_head;
     while(itr->next)
       itr = itr->next;
 
@@ -177,9 +177,9 @@ public:
       return;
     }
 
-    gknode<T>* new_node = new gknode<T>(node_obj);
+    gkl_node<T>* new_node = new gkl_node<T>(node_obj);
     U counter = 0;
-    gknode<T>* itr = list_head;
+    gkl_node<T>* itr = list_head;
     while(counter != index){
       itr = itr->next;
       counter += 1;
@@ -194,7 +194,7 @@ public:
   }
 
   void remove(T* node_obj){
-    gknode<T>* temp_node = find_obj_node(node_obj);
+    gkl_node<T>* temp_node = find_obj_node(node_obj);
 
     if(temp_node){
       free_memory(temp_node);
@@ -214,7 +214,7 @@ public:
       return remove_tail();
 
     U counter = 0;
-    gknode<T>* itr = list_head;
+    gkl_node<T>* itr = list_head;
     T* obj = EMPTY_NODE;
     while(counter != index){
       itr = itr->next;
@@ -231,11 +231,11 @@ public:
     return obj;
   }
 
-  void iterator_head(gkn_iterator<T>* itr){
+  void begin(gkl_iterator<T>* itr){
     itr->init(list_head, list_head ? list_head->obj : EMPTY_NODE);
   }
 
-  void get_next(gkn_iterator<T>* itr_obj){
+  void get_next(gkl_iterator<T>* itr_obj){
     if(!itr_obj->this_node || !itr_obj->this_node->next) {
       itr_obj->init(EMPTY_NODE, EMPTY_NODE);
       return;
@@ -244,7 +244,7 @@ public:
     itr_obj->init(itr_obj->this_node->next, itr_obj->this_node->next->obj);
   }
 
-  void get_prev(gkn_iterator<T>* itr_obj){
+  void get_prev(gkl_iterator<T>* itr_obj){
     if(!itr_obj->this_node || !itr_obj->this_node->prev) {
       itr_obj->init(EMPTY_NODE, EMPTY_NODE);
       return;
@@ -273,7 +273,7 @@ public:
   //     return;
   //   }
 
-  //   gknode<T>* itr = list_head;
+  //   gkl_node<T>* itr = list_head;
   //   LOG_ERR("%d : ", length);
   //   do{
   //     LOG_ERR("->%d", itr->obj->x);
