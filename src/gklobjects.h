@@ -4,19 +4,19 @@
 #define EMPTY_NODE nullptr
 
 template<class T>
-class gknode {
+class gkl_node {
 public:
   T* obj;
-  gknode<T>* next;
-  gknode<T>* prev;
+  gkl_node<T>* next;
+  gkl_node<T>* prev;
 
-  gknode(){
+  gkl_node(){
     obj = EMPTY_NODE;
     next = EMPTY_NODE;
     prev = EMPTY_NODE;
   }
 
-  gknode(T* _obj){
+  gkl_node(T* _obj){
     obj = _obj;
     next = EMPTY_NODE;
     prev = EMPTY_NODE;
@@ -24,17 +24,17 @@ public:
 };
 
 template<class T>
-class gkn_iterator {
+class gkl_iterator {
 public:
-  gknode<T>* this_node;
+  gkl_node<T>* this_node;
   T* obj;
 
-  gkn_iterator(){
+  gkl_iterator(){
     this_node = EMPTY_NODE;
     obj = EMPTY_NODE;
   }
 
-  void init(gknode<T>* _gkn, T* _obj){
+  void init(gkl_node<T>* _gkn, T* _obj){
     this_node = _gkn;
     obj = _obj;
   }

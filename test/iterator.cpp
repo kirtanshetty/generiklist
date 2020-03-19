@@ -8,14 +8,14 @@
 
 int main(int argc, char const *argv[])
 {
-  generiklist<foo, uint16_t> *kl = new generiklist<foo, uint16_t>();
+  gk_list<foo, uint16_t> *kl = new gk_list<foo, uint16_t>();
 
   for(uint16_t i = 1; i <= LIST_LENGTH; i++){
     kl->push(new foo(i));
   }
 
-  gkn_iterator<foo> foo_itr_1;
-  kl->iterator_head(&foo_itr_1);
+  gkl_iterator<foo> foo_itr_1;
+  kl->begin(&foo_itr_1);
 
   int count = 1;
   printf("Printing in while loop from head\n");
@@ -36,10 +36,9 @@ int main(int argc, char const *argv[])
 
   // foo* foo_itr_2;
   printf("Printing in for loop from head\n");
-  gkn_iterator<foo> foo_itr_2;
-  kl->iterator_head(&foo_itr_2);
+  gkl_iterator<foo> foo_itr_2;
   count = 1;
-  for(kl->iterator_head(&foo_itr_2); foo_itr_2.obj != nullptr; kl->get_next(&foo_itr_2)){
+  for(kl->begin(&foo_itr_2); foo_itr_2.obj != nullptr; kl->get_next(&foo_itr_2)){
     if(count > 9)
       break;
     printf(" -> %d", foo_itr_2.obj->x);

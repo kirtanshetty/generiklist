@@ -5,7 +5,7 @@
 
 int main(int argc, char const *argv[])
 {
-  generiklist<foo, uint16_t> *kl = new generiklist<foo, uint16_t>();
+  gk_list<foo, uint16_t> *kl = new gk_list<foo, uint16_t>();
 
   foo a(10);
   foo b(20);
