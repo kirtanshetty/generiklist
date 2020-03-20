@@ -16,7 +16,7 @@ class gk_list {
 private:
   bool acceptDuplicate;
   gkl_node<T>* list_head;
-  U length;
+  U len;
 
   gkl_node<T>* find_obj_node(T* node_obj){
     gkl_node<T>* itr = list_head;
@@ -54,7 +54,7 @@ public:
   gk_list(bool _acceptDuplicate = false){
     acceptDuplicate = _acceptDuplicate;
     list_head = EMPTY_NODE;
-    length = 0;
+    len = 0;
   }
 
   void push(T* node_obj){
@@ -66,7 +66,7 @@ public:
 
     if(!list_head){
       list_head = new_node;
-      length += 1;
+      len += 1;
       return;
     }
 
@@ -76,12 +76,12 @@ public:
 
     itr->next = new_node;
     new_node->prev = itr;
-    length += 1;
+    len += 1;
   }
 
   T* pop(){
     if(!list_head){
-      length = 0;
+      len = 0;
       return EMPTY_NODE;
     }
 
@@ -90,13 +90,13 @@ public:
 
     if(!itr->next){
       list_head = EMPTY_NODE;
-      length -= 1;
+      len -= 1;
     }
     else{
       list_head = itr->next;
-      if(length != 1)
+      if(len != 1)
         list_head->prev = EMPTY_NODE;
-      length -= 1;
+      len -= 1;
     }
 
     delete itr;
@@ -113,14 +113,14 @@ public:
 
     if(!list_head){
       list_head = new_node;
-      length += 1;
+      len += 1;
       return;
     }
 
     new_node->next = list_head;
     list_head->prev = new_node;
     list_head = new_node;
-    length += 1;
+    len += 1;
   }
 
   T* remove_head(){
@@ -133,7 +133,7 @@ public:
 
   T* remove_tail(){
     if(!list_head){
-      length = 0;
+      len = 0;
       LOG_DEBUG("List is already empty.\n");
       return EMPTY_NODE;
     }
@@ -146,12 +146,12 @@ public:
 
     obj = itr->obj;
 
-    if(length != 1)
+    if(len != 1)
       itr->prev->next = EMPTY_NODE;
 
     delete itr;
 
-    length -= 1;
+    len -= 1;
 
     return obj;
 
@@ -162,8 +162,8 @@ public:
       return;
     }
 
-    if(index > length){
-      LOG_ERR("Index %u is greater than the length %u\n", index, length);
+    if(index > len){
+      LOG_ERR("Index %u is greater than the len %u\n", index, len);
       return;
     }
 
@@ -172,7 +172,7 @@ public:
       return;
     }
 
-    if(index == length){
+    if(index == len){
       add_to_tail(node_obj);
       return;
     }
@@ -190,27 +190,35 @@ public:
 
     itr->prev->next = new_node;
     itr->prev = new_node;
-    length += 1;
+    len += 1;
   }
 
   void remove(T* node_obj){
     gkl_node<T>* temp_node = find_obj_node(node_obj);
 
-    if(temp_node){
-      free_memory(temp_node);
-    }
+    if(!temp_node) return;
+
+    if(list_head == temp_node) list_head = temp_node->next;
+    if(temp_node->prev) temp_node->prev->next = temp_node->next;
+    if(temp_node->next) temp_node->next->prev = temp_node->prev;
+
+    len -= 1;
+
+    if(!len) list_head = EMPTY_NODE;
+
+    free_memory(temp_node);
   }
 
   T* remove_from_index(U index){
-    if(index >= length){
-      LOG_ERR("add_to_index: index is greater than the length\n");
+    if(index >= len){
+      LOG_ERR("add_to_index: index is greater than the len\n");
       return EMPTY_NODE;
     }
 
     if(index == 0)
       return pop();
 
-    if(index == length - 1)
+    if(index == len - 1)
       return remove_tail();
 
     U counter = 0;
@@ -224,11 +232,22 @@ public:
     obj = itr->obj;
     itr->next->prev = itr->prev;
     itr->prev->next = itr->next;
-    length -= 1;
+    len -= 1;
+
+    if(!len) list_head = EMPTY_NODE;
 
     delete itr;
 
     return obj;
+  }
+
+  T* truncate(){
+    T* count = 0;
+    while(pop()){
+      count += 1;
+    }
+
+    return count;
   }
 
   void begin(gkl_iterator<T>* itr){
@@ -262,8 +281,8 @@ public:
     return isDuplicate(node_obj, false);
   }
 
-  U get_length(){
-    return length;
+  U length(){
+    return len;
   }
 
   // uncomment only to test the demo file in test directory
@@ -274,7 +293,7 @@ public:
   //   }
 
   //   gkl_node<T>* itr = list_head;
-  //   LOG_ERR("%d : ", length);
+  //   LOG_ERR("%d : ", len);
   //   do{
   //     LOG_ERR("->%d", itr->obj->x);
   //     itr = itr->next;
