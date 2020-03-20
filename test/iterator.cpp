@@ -4,7 +4,7 @@
 #include "./demo_classes/foo.h"
 
 #define LIST_LENGTH 10
-#define DIVIDER_LINE "\n-------------------------------------------------------------------------------\n"
+#define DIVIDER_LINE "\n--------------------------------------------------------\n"
 
 int main(int argc, char const *argv[])
 {
@@ -18,6 +18,7 @@ int main(int argc, char const *argv[])
   kl->begin(&foo_itr_1);
 
   int count = 1;
+  printf(DIVIDER_LINE);
   printf("Printing in while loop from head\n");
   do{
     printf(" -> %d", foo_itr_1.obj->x);
