@@ -42,13 +42,13 @@ int main(int argc, char const *argv[])
   kl->add_to_index(&b, 0);
   // kl->print_klist();
 
-  kl->add_to_index(&b, kl->get_length());
+  kl->add_to_index(&b, kl->length());
   // kl->print_klist();
 
   kl->remove_from_index(0);
   // kl->print_klist();
 
-  kl->remove_from_index(kl->get_length());
+  kl->remove_from_index(kl->length());
   // kl->print_klist();
 
   kl->remove_from_index(3);
@@ -59,7 +59,7 @@ int main(int argc, char const *argv[])
   // kl->pop();
 
 
-  printf("length %u\n", kl->get_length());
+  printf("length %u\n", kl->length());
 
   return 0;
 }
