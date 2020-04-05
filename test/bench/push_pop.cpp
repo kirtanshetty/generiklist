@@ -16,7 +16,7 @@ typedef uint32_t listlen_t;
 void gkpush_test(gk_list<foo, listlen_t>* kl, listlen_t size){
   for(listlen_t i = 1; i <= size; i++){
     // printf("i=%d\n", i);
-    kl->push(new foo(i));
+    kl->push_back(new foo(i));
   }
 }
 

@@ -12,7 +12,7 @@ int main(int argc, char const *argv[])
   gk_list<foo, uint16_t> *kl = new gk_list<foo, uint16_t>();
 
   for(uint16_t i = 1; i <= LIST_LENGTH; i++){
-    kl->push(new foo(i));
+    kl->push_back(new foo(i));
   }
 
   gkl_iterator<foo> foo_itr_1;

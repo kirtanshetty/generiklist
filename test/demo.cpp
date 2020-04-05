@@ -11,29 +11,28 @@ int main(int argc, char const *argv[])
   foo b(20);
   foo c(30);
 
-  kl->remove_tail();
-  kl->pop();
+  kl->pop_front();
 
-  kl->push(&a);
+  kl->push_back(&a);
   // kl->print_klist();
 
   kl->exists(&a);
-  kl->push(&a);
+  kl->push_back(&a);
   // kl->print_klist();
 
-  kl->push(&a);
+  kl->push_back(&a);
   // kl->print_klist();
 
-  kl->pop();
+  kl->pop_front();
   // kl->print_klist();
 
-  kl->push(&b);
+  kl->push_back(&b);
   // kl->print_klist();
 
-  kl->push(&c);
+  kl->push_back(&c);
   // kl->print_klist();
 
-  kl->add_to_head(&c);
+  kl->push_front(&c);
   // kl->print_klist();
 
   kl->add_to_index(&c, 3);
@@ -56,7 +55,7 @@ int main(int argc, char const *argv[])
 
 
   // kl->remove_tail();
-  // kl->pop();
+  // kl->pop_front();
 
 
   printf("length %u\n", kl->length());

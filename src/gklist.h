@@ -76,72 +76,29 @@ public:
     printf("gk_list:end\n");
   }
 
-  void push(T* node_obj){
-    // printf("push:0\n");
+  void push_back(T* node_obj){
     if(!acceptDuplicate && isDuplicate(node_obj)){
       return;
     }
-    // printf("push:0:1\n");
 
-    // gkl_node<T>* new_node = new gkl_node<T>(node_obj);
     gkl_node<T>* new_node = get_new_node();
-    // printf("push:0:2, %p\n", new_node);
     new_node->obj = node_obj;
 
-    // printf("push:1\n");
     if(!list_head){
-      // printf("push:1:1\n");
       list_head = new_node;
-      // printf("push:1:2\n");
       list_tail = new_node;
-      // printf("push:1:3\n");
       len += 1;
       return;
     }
-    // printf("push:2\n");
 
-    gkl_node<T>* itr = list_head;
-    while(itr->next)
-      itr = itr->next;
+    list_tail->next = new_node;
+    new_node->prev = list_tail;
+    list_tail = new_node;
 
-    // printf("push:3\n");
-    itr->next = new_node;
-    new_node->prev = itr;
-
-    // list_tail->next = new_node;
-    // new_node->prev = list_tail;
-    // list_tail = new_node;
-
-    // printf("push:4\n");
     len += 1;
   }
 
-  T* pop(){
-    if(!list_head){
-      len = 0;
-      return EMPTY_NODE;
-    }
-
-    gkl_node<T>* itr = list_head;
-    T* obj = itr->obj;
-
-    if(!itr->next){
-      list_head = EMPTY_NODE;
-      len -= 1;
-    }
-    else{
-      list_head = itr->next;
-      if(len != 1)
-        list_head->prev = EMPTY_NODE;
-      len -= 1;
-    }
-
-    delete itr;
-
-    return obj;
-  }
-
-  void add_to_head(T* node_obj){
+  void push_front(T* node_obj){
     if(!acceptDuplicate && isDuplicate(node_obj)){
       return;
     }
@@ -161,15 +118,7 @@ public:
     len += 1;
   }
 
-  T* remove_head(){
-    return pop();
-  }
-
-  void add_to_tail(T* node_obj){
-    push(node_obj);
-  }
-
-  T* remove_tail(){
+  T* pop_back(){
     if(!list_head){
       len = 0;
       LOG_DEBUG("List is already empty.\n");
@@ -195,6 +144,31 @@ public:
 
   }
 
+  T* pop_front(){
+    if(!list_head){
+      len = 0;
+      return EMPTY_NODE;
+    }
+
+    gkl_node<T>* itr = list_head;
+    T* obj = itr->obj;
+
+    if(!itr->next){
+      list_head = EMPTY_NODE;
+      len -= 1;
+    }
+    else{
+      list_head = itr->next;
+      if(len != 1)
+        list_head->prev = EMPTY_NODE;
+      len -= 1;
+    }
+
+    delete itr;
+
+    return obj;
+  }
+
   void add_to_index(T* node_obj, U index){
     if(!acceptDuplicate && isDuplicate(node_obj)){
       return;
@@ -206,12 +180,12 @@ public:
     }
 
     if(index == 0){
-      add_to_head(node_obj);
+      push_front(node_obj);
       return;
     }
 
     if(index == len){
-      add_to_tail(node_obj);
+      push_back(node_obj);
       return;
     }
 
@@ -256,10 +230,10 @@ public:
     }
 
     if(index == 0)
-      return pop();
+      return pop_front();
 
     if(index == len - 1)
-      return remove_tail();
+      return pop_back();
 
     U counter = 0;
     gkl_node<T>* itr = list_head;
@@ -281,9 +255,10 @@ public:
     return obj;
   }
 
+  // to be changed
   T* truncate(){
     T* count = 0;
-    while(pop()){
+    while(pop_front()){
       count += 1;
     }
 
