@@ -1,10 +1,11 @@
+#include <iostream>
 #include <stdint.h>
 
 #include "../src/gklist.h"
 #include "./demo_classes/foo.h"
 
 #define LIST_LENGTH 10
-#define DIVIDER_LINE "\n--------------------------------------------------------\n"
+// #DIVIDER_LINE;\n--------------------------------------------------------\n"
 
 int main(int argc, char const *argv[])
 {
@@ -18,14 +19,14 @@ int main(int argc, char const *argv[])
   kl->begin(&foo_itr_1);
 
   int count = 1;
-  printf(DIVIDER_LINE);
+  DIVIDER_LINE;
   printf("Printing in while loop from head\n");
   do{
     printf(" -> %d", foo_itr_1.obj->x);
     kl->get_next(&foo_itr_1);
     count += 1;
   } while(foo_itr_1.obj && count < 10);
-  printf(DIVIDER_LINE);
+  DIVIDER_LINE;
 
   // foo_itr_1 = kl->iterator_tail();
   printf("Printing in while loop from tail\n");
@@ -33,7 +34,7 @@ int main(int argc, char const *argv[])
     printf(" -> %d", foo_itr_1.obj->x);
     kl->get_prev(&foo_itr_1);
   } while(foo_itr_1.obj);
-  printf(DIVIDER_LINE);
+  DIVIDER_LINE;
 
   // foo* foo_itr_2;
   printf("Printing in for loop from head\n");
@@ -45,12 +46,12 @@ int main(int argc, char const *argv[])
     printf(" -> %d", foo_itr_2.obj->x);
     count  += 1;
   }
-  printf(DIVIDER_LINE);
+  DIVIDER_LINE;
 
   printf("Printing in for loop from tail\n");
   for(; foo_itr_2.obj != nullptr; kl->get_prev(&foo_itr_2)){
     printf(" -> %d", foo_itr_2.obj->x);
     count  += 1;
   }
-  printf(DIVIDER_LINE);
+  DIVIDER_LINE;
 }

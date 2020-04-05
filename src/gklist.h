@@ -1,6 +1,8 @@
 #ifndef __GK_LIST_H__
 #define __GK_LIST_H__
 
+#include <stdlib.h>
+
 #include <cstddef>
 #include <stdio.h>
 
@@ -16,6 +18,7 @@ class gk_list {
 private:
   bool acceptDuplicate;
   gkl_node<T>* list_head;
+  gkl_node<T>* list_tail;
   U len;
 
   gkl_node<T>* find_obj_node(T* node_obj){
@@ -23,26 +26,39 @@ private:
 
     if(!itr) return EMPTY_NODE;
 
+    // printf("find_obj_node: 1\n");
     do{
       if(itr->obj == node_obj){
         return itr;
       }
       itr = itr->next;
+      // printf("itr %p\n", itr);
     } while(itr);
+    // printf("find_obj_node: 2\n");
 
     return EMPTY_NODE;
   }
 
   bool isDuplicate(T* node_obj, bool log_msg = true){
+    // printf("isDuplicate:0\n");
     if(find_obj_node(node_obj)){
+      // printf("isDuplicate:1\n");
       if(log_msg){
         LOG_ERR("Cannot add duplicate object. Change the gk_list initialization to accept duplicate objects.");
       }
-
+      // printf("isDuplicate:2\n");
       return true;
     }
 
     return false;
+  }
+
+  gkl_node<T>* get_new_node(){
+    gkl_node<T>* new_node = (gkl_node<T>*)malloc(sizeof(gkl_node<T>));
+    new_node->prev = EMPTY_NODE;
+    new_node->next = EMPTY_NODE;
+
+    return new_node;
   }
 
   void free_memory(gkl_node<T>* fnode){
@@ -52,30 +68,51 @@ private:
 public:
 
   gk_list(bool _acceptDuplicate = false){
+    printf("gk_list:beg\n");
     acceptDuplicate = _acceptDuplicate;
     list_head = EMPTY_NODE;
+    list_tail = EMPTY_NODE;
     len = 0;
+    printf("gk_list:end\n");
   }
 
   void push(T* node_obj){
+    // printf("push:0\n");
     if(!acceptDuplicate && isDuplicate(node_obj)){
       return;
     }
+    // printf("push:0:1\n");
 
-    gkl_node<T>* new_node = new gkl_node<T>(node_obj);
+    // gkl_node<T>* new_node = new gkl_node<T>(node_obj);
+    gkl_node<T>* new_node = get_new_node();
+    // printf("push:0:2, %p\n", new_node);
+    new_node->obj = node_obj;
 
+    // printf("push:1\n");
     if(!list_head){
+      // printf("push:1:1\n");
       list_head = new_node;
+      // printf("push:1:2\n");
+      list_tail = new_node;
+      // printf("push:1:3\n");
       len += 1;
       return;
     }
+    // printf("push:2\n");
 
     gkl_node<T>* itr = list_head;
     while(itr->next)
       itr = itr->next;
 
+    // printf("push:3\n");
     itr->next = new_node;
     new_node->prev = itr;
+
+    // list_tail->next = new_node;
+    // new_node->prev = list_tail;
+    // list_tail = new_node;
+
+    // printf("push:4\n");
     len += 1;
   }
 
@@ -109,7 +146,8 @@ public:
       return;
     }
 
-    gkl_node<T>* new_node = new gkl_node<T>(node_obj);
+    gkl_node<T>* new_node = get_new_node();
+    new_node->obj = node_obj;
 
     if(!list_head){
       list_head = new_node;
@@ -177,7 +215,9 @@ public:
       return;
     }
 
-    gkl_node<T>* new_node = new gkl_node<T>(node_obj);
+    gkl_node<T>* new_node = get_new_node();
+    new_node->obj = node_obj;
+
     U counter = 0;
     gkl_node<T>* itr = list_head;
     while(counter != index){
